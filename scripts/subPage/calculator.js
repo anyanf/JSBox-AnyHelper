@@ -6,8 +6,9 @@ const btnsHeight = btnDiameter * 5 + btnMargin * 6;
 
 const btnsData = [
   {
-    type: "C",
-    iconName: "C_Normal@2x",
+    type: "AC",
+    iconName: "AC_Normal@2x",
+    iconSelectedName: "C_Normal@2x",
     bgcolor: $color("#a5a5a5")
   },
   {
@@ -17,90 +18,97 @@ const btnsData = [
   },
   {
     type: "%",
-    iconName: "C_Normal",
+    iconName: "percent_Normal@2x",
     bgcolor: $color("#a5a5a5")
   },
   {
     type: "/",
-    iconName: "C_Normal",
+    iconName: "division_Normal@2x",
     bgcolor: $color("#f1a33c")
   },
   {
     type: "7",
-    iconName: "C_Normal",
+    iconName: "7_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "8",
-    iconName: "C_Normal",
+    iconName: "8_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "9",
-    iconName: "C_Normal",
+    iconName: "9_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "*",
-    iconName: "C_Normal",
+    iconName: "multiplication_Normal@2x",
     bgcolor: $color("#f1a33c")
   },
   {
     type: "4",
-    iconName: "C_Normal",
+    iconName: "4_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "5",
-    iconName: "C_Normal",
+    iconName: "5_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "6",
-    iconName: "C_Normal",
+    iconName: "6_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "-",
-    iconName: "C_Normal",
+    iconName: "subtraction_Normal@2x",
     bgcolor: $color("#f1a33c")
   },
   {
     type: "1",
-    iconName: "C_Normal",
+    iconName: "1_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "2",
-    iconName: "C_Normal",
+    iconName: "2_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "3",
-    iconName: "C_Normal",
+    iconName: "3_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "+",
-    iconName: "C_Normal",
+    iconName: "addition_Normal@2x",
     bgcolor: $color("#f1a33c")
   },
   {
     type: "0",
-    iconName: "C_Normal",
+    iconName: "0_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: ".",
-    iconName: "C_Normal",
+    iconName: "dot_Normal@2x",
     bgcolor: $color("#515151")
   },
   {
     type: "=",
-    iconName: "C_Normal",
+    iconName: "equals_Normal@2x",
     bgcolor: $color("#f1a33c")
   },
-]
+].map((item) => (
+  {
+    type: item.type,
+    btnImage: {
+      bgcolor: item.bgcolor,
+      image: image = $image("assets/calculator/" + item.iconName + ".png"),
+    },
+  }))
 
 const view = {
   props: {
@@ -155,30 +163,20 @@ const view = {
           props: {},
           views: [
             {
-              type: "button",
+              type: "image",
               props: {
-                id: "btn",
+                id: "btnImage",
                 font: $font(38),
                 cornerRadius: btnDiameter / 2,
-                userInteractionEnabled: false
+                userInteractionEnabled: false,
+                contentMode: $contentMode.center,
+                tintColor: $color("#ffffff"),
               },
               layout: $layout.fill,
-              events: {
-                tapped: function (sender) {
-                  $ui.toast("Tapped");
-                },
-              },
             },
           ],
         },
-        data: btnsData.map((item) => ({
-          type: item.type,
-          btn: {
-            // title: `${item}.`,
-            bgcolor: item.bgcolor,
-            image: $image("assets/calculator/" + item.iconName + ".png"),
-          },
-        })),
+        data: btnsData,
       },
       layout: function (make, view) {
         make.left.equalTo(btnsLeftAndRightMargin)
@@ -194,8 +192,21 @@ const view = {
           }
           return $size(btnDiameter, btnDiameter);
         },
+        forEachItem: function (view, indexPath) {
+          const btnImage = view.get("btnImage")
+          const data = btnsData[indexPath.row];
+
+          const needAlwaysTemplate = data.type === "1" || data.type === "2" || data.type === "3" || data.type === "4" || data.type === "5" || data.type === "6" || data.type === "7" || data.type === "8" || data.type === "9" || data.type === "0" || data.type === ".";
+
+          if (needAlwaysTemplate) {
+            btnImage.image = btnImage.image.alwaysTemplate
+          } else {
+            btnImage.image = btnImage.image.alwaysOriginal
+          }
+          console.log(btnImage + "\n")
+        },
         didSelect: function (sender, indexPath, data) {
-          $ui.toast(data.btn.title)
+          $ui.toast(data.type)
         }
       },
     },
