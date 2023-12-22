@@ -7,106 +7,107 @@ const btnsHeight = btnDiameter * 5 + btnMargin * 6;
 const btnsData = [
   {
     type: "AC",
-    iconName: "AC_Normal@2x",
-    iconSelectedName: "C_Normal@2x",
-    bgcolor: $color("#a5a5a5")
+    title: "C",
+    subTitle: "C",
+    bgcolor: "#a5a5a5"
   },
   {
     type: "±",
-    iconName: "negate_Normal@2x",
-    bgcolor: $color("#a5a5a5")
+    title: "±",
+    bgcolor: "#a5a5a5"
   },
   {
     type: "%",
-    iconName: "percent_Normal@2x",
-    bgcolor: $color("#a5a5a5")
+    title: "%",
+    bgcolor: "#a5a5a5"
   },
   {
-    type: "/",
+    type: "÷",
+    title: "÷",
     iconName: "division_Normal@2x",
-    bgcolor: $color("#f1a33c")
+    bgcolor: "#f1a33c"
   },
   {
     type: "7",
-    iconName: "7_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "7",
+    bgcolor: "#515151"
   },
   {
     type: "8",
-    iconName: "8_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "8",
+    bgcolor: "#515151"
   },
   {
     type: "9",
-    iconName: "9_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "9",
+    bgcolor: "#515151"
   },
   {
-    type: "*",
-    iconName: "multiplication_Normal@2x",
-    bgcolor: $color("#f1a33c")
+    type: "×",
+    title: "×",
+    bgcolor: "#f1a33c"
   },
   {
     type: "4",
-    iconName: "4_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "4",
+    bgcolor: "#515151"
   },
   {
     type: "5",
-    iconName: "5_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "5",
+    bgcolor: "#515151"
   },
   {
     type: "6",
-    iconName: "6_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "6",
+    bgcolor: "#515151"
   },
   {
-    type: "-",
-    iconName: "subtraction_Normal@2x",
-    bgcolor: $color("#f1a33c")
+    type: "﹣",
+    title: "﹣",
+    bgcolor: "#f1a33c"
   },
   {
     type: "1",
-    iconName: "1_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "1",
+    bgcolor: "#515151"
   },
   {
     type: "2",
-    iconName: "2_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "2",
+    bgcolor: "#515151"
   },
   {
     type: "3",
-    iconName: "3_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "3",
+    bgcolor: "#515151"
   },
   {
-    type: "+",
-    iconName: "addition_Normal@2x",
-    bgcolor: $color("#f1a33c")
+    type: "＋",
+    title: "＋",
+    bgcolor: "#f1a33c"
   },
   {
     type: "0",
-    iconName: "0_Normal@2x",
-    bgcolor: $color("#515151")
+    title: "0",
+    bgcolor: "#515151"
   },
   {
     type: ".",
-    iconName: "dot_Normal@2x",
-    bgcolor: $color("#515151")
+    title: ".",
+    bgcolor: "#515151"
   },
   {
     type: "=",
-    iconName: "equals_Normal@2x",
-    bgcolor: $color("#f1a33c")
+    title: "=",
+    bgcolor: "#f1a33c"
   },
 ].map((item) => (
   {
     type: item.type,
-    btnImage: {
-      bgcolor: item.bgcolor,
-      image: image = $image("assets/calculator/" + item.iconName + ".png"),
+    btnText: {
+      bgcolor: $color(item.bgcolor),
+      text: item.title,
     },
   }))
 
@@ -163,14 +164,13 @@ const view = {
           props: {},
           views: [
             {
-              type: "image",
+              type: "label",
               props: {
-                id: "btnImage",
+                id: "btnText",
                 font: $font(38),
+                align: $align.center,
+                textColor: $color("#ffffff"),
                 cornerRadius: btnDiameter / 2,
-                userInteractionEnabled: false,
-                contentMode: $contentMode.center,
-                tintColor: $color("#ffffff"),
               },
               layout: $layout.fill,
             },
@@ -193,25 +193,36 @@ const view = {
           return $size(btnDiameter, btnDiameter);
         },
         forEachItem: function (view, indexPath) {
-          const btnImage = view.get("btnImage")
+          const btnText = view.get("btnText")
           const data = btnsData[indexPath.row];
 
-          const needAlwaysTemplate = data.type === "1" || data.type === "2" || data.type === "3" || data.type === "4" || data.type === "5" || data.type === "6" || data.type === "7" || data.type === "8" || data.type === "9" || data.type === "0" || data.type === ".";
-
-          if (needAlwaysTemplate) {
-            btnImage.image = btnImage.image.alwaysTemplate
-          } else {
-            btnImage.image = btnImage.image.alwaysOriginal
-          }
-          console.log(btnImage + "\n")
+          console.log(btnText + "\n")
         },
         didSelect: function (sender, indexPath, data) {
-          $ui.toast(data.type)
+          handleInput(data.type);
         }
       },
     },
   ],
 };
+
+const numbetStack = [Number];
+const symbolStack = [String];
+
+function handleInput(type) {
+  console.log(type);
+
+
+
+
+}
+
+
+// 后缀表达式 逆波兰
+function calculateSuffixExpression() {
+  $ui.toast($("current"))
+}
+
 
 function show() {
   $ui.push(view);
